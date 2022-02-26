@@ -22,6 +22,13 @@ impl Board {
             .chain(cells.index_axis(Axis(1), coord.col as usize).iter())
             .all(|&v| v != value)
     }
+
+    pub fn set(&self, coord: &Coord, value: u8) {
+        let mut cells = self.cells.borrow_mut();
+        cells[(coord.row as usize, coord.col as usize)] = value;
+        self.notify
+            .row_changed(coord.row as usize * cells.nrows() + coord.col as usize);
+    }
 }
 
 impl Default for Board {

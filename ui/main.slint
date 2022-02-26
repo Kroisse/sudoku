@@ -10,13 +10,32 @@ MainWindow := Window {
     property<length> cell-size: 64px;
 
     property<[int]> board;
-    callback cell-clicked(Coord);
+    property<Coord> selected-cell;
+    callback cell-clicked(int);
 
     forward-focus: key-handler;
 
     key-handler := FocusScope {
         key-pressed(event) => {
-            debug(event.text);
+            if (event.text == "1") {
+                cell-clicked(1);
+            } else if (event.text == "2") {
+                cell-clicked(2);
+            } else if (event.text == "3") {
+                cell-clicked(3);
+            } else if (event.text == "4") {
+                cell-clicked(4);
+            } else if (event.text == "5") {
+                cell-clicked(5);
+            } else if (event.text == "6") {
+                cell-clicked(6);
+            } else if (event.text == "7") {
+                cell-clicked(7);
+            } else if (event.text == "8") {
+                cell-clicked(8);
+            } else if (event.text == "9") {
+                cell-clicked(9);
+            }
             accept
         }
     }
@@ -33,6 +52,9 @@ MainWindow := Window {
                 for i in [1, 2, 3, 4, 5, 6, 7, 8, 9]: Cell {
                     size: root.cell-size;
                     text: i;
+                    clicked => {
+                        cell-clicked(i);
+                    }
                 }
             }
         }
@@ -44,12 +66,15 @@ MainWindow := Window {
             border-width: 1px;
 
             for cell[index] in board: Cell {
+                property<Coord> coord: { row: floor(index / 9), col: mod(index, 9) };
+
                 size: root.cell-size;
                 text: cell > 0 ? cell : "";
-                x: mod(index, 9) * root.cell-size;
-                y: floor(index / 9) * root.cell-size;
+                x: coord.col * root.cell-size;
+                y: coord.row * root.cell-size;
+                background: root.selected-cell.row == coord.row || root.selected-cell.col == coord.col ? lightgrey : transparent;
                 clicked => {
-                    root.cell-clicked({ col: mod(index, 9), row: floor(index / 9) });
+                    root.selected-cell = coord;
                 }
             }
         }
