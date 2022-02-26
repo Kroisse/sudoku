@@ -2,6 +2,8 @@ mod board;
 
 use std::rc::Rc;
 
+use rand::prelude::*;
+
 use crate::board::Board;
 
 slint::include_modules!();
@@ -10,7 +12,20 @@ fn main() {
     let window = MainWindow::new();
 
     let board = Rc::new(Board::default());
-    board.check(Coord { row: 0, col: 0 }, 1);
+
+    {
+        let mut rng = rand::thread_rng();
+        for _ in 0..20 {
+            let coord = Coord {
+                row: rng.gen_range(0..9),
+                col: rng.gen_range(0..9),
+            };
+            let value = rng.gen_range(1..=9);
+            if board.check(&coord, value) {
+                board.set(&coord, value);
+            }
+        }
+    }
 
     window.set_board(Rc::clone(&board).into());
 

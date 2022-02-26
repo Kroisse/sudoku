@@ -11,7 +11,7 @@ pub struct Board {
 }
 
 impl Board {
-    pub fn check(&self, coord: Coord, value: u8) -> bool {
+    pub fn check(&self, coord: &Coord, value: u8) -> bool {
         let cells = self.cells.borrow();
         let chunk_row = coord.row as usize / 3 * 3;
         let chunk_col = coord.col as usize / 3 * 3;
