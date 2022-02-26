@@ -1,0 +1,21 @@
+export Cell := Rectangle {
+    property<length> size;
+    property<string> text <=> label.text;
+    callback clicked <=> touch.clicked;
+
+    width: size;
+    height: size;
+    border-color: grey;
+    border-width: 1px;
+
+    touch := TouchArea {
+        mouse-cursor: pointer;
+    }
+
+    label := Text {
+        width: parent.width;
+        height: parent.height;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+    }
+}

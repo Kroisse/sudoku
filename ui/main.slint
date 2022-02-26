@@ -1,0 +1,57 @@
+import { Button } from "std-widgets.slint";
+import { Cell } from "./cell.slint";
+
+export struct Coord := {
+    row: int,
+    col: int,
+}
+
+MainWindow := Window {
+    property<length> cell-size: 64px;
+
+    property<[int]> board;
+    callback cell-clicked(Coord);
+
+    forward-focus: key-handler;
+
+    key-handler := FocusScope {
+        key-pressed(event) => {
+            debug(event.text);
+            accept
+        }
+    }
+
+    VerticalLayout {
+        alignment: center;
+        padding: 32px;
+        spacing: 16px;
+
+        Rectangle {
+            border-color: grey;
+            border-width: 1px;
+            HorizontalLayout {
+                for i in [1, 2, 3, 4, 5, 6, 7, 8, 9]: Cell {
+                    size: root.cell-size;
+                    text: i;
+                }
+            }
+        }
+
+        Rectangle {
+            width: cell-size * 9;
+            height: cell-size * 9;
+            border-color: grey;
+            border-width: 1px;
+
+            for cell[index] in board: Cell {
+                size: root.cell-size;
+                text: cell > 0 ? cell : "";
+                x: mod(index, 9) * root.cell-size;
+                y: floor(index / 9) * root.cell-size;
+                clicked => {
+                    root.cell-clicked({ col: mod(index, 9), row: floor(index / 9) });
+                }
+            }
+        }
+    }
+}
