@@ -10,7 +10,11 @@ publish = false
 [dependencies]
 ndarray = "0.15"
 rand = "0.8"
-slint = "0.2"
+
+[dependencies.slint]
+version = "0.2"
+default-features = false
+features = ["compat-0-2-0", "std", "backend-gl-all"]
 
 [build-dependencies]
 slint-build = "0.2"
